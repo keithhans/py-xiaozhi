@@ -186,7 +186,7 @@ class AudioCodec:
                         wav_file.setsampwidth(2)  # 16位采样，每个采样2字节
                         wav_file.setframerate(AudioConfig.INPUT_SAMPLE_RATE)
                         wav_file.writeframes(data)
-                    logger.info(f"已保存音频文件: {wav_filename}")
+                    # logger.info(f"已保存音频文件: {wav_filename}")
                     
                 except OSError as e:
                     if "Input overflowed" in str(e):

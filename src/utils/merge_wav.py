@@ -27,7 +27,6 @@ def merge_wav_files(input_dir, output_file):
         
         # 依次读取并写入每个文件的音频数据
         for wav_file in wav_files:
-            print(wav_file)
             with wave.open(wav_file, 'rb') as wav:
                 # 确保所有文件参数一致
                 if wav.getparams() != params:
