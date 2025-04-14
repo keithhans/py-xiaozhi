@@ -7,6 +7,9 @@ from src.constants.constants import AudioConfig
 import time
 import sys
 import threading
+import wave
+import os
+from datetime import datetime
 
 logger = logging.getLogger("AudioCodec")
 
@@ -170,6 +173,21 @@ class AudioCodec:
                         AudioConfig.INPUT_FRAME_SIZE,
                         exception_on_overflow=False
                     )
+                    
+                    # 保存音频数据为wav文件
+                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+                    wav_filename = f"audio_{timestamp}.wav"
+                    wav_dir = "recordings"
+                    os.makedirs(wav_dir, exist_ok=True)
+                    wav_path = os.path.join(wav_dir, wav_filename)
+                    
+                    with wave.open(wav_path, "wb") as wav_file:
+                        wav_file.setnchannels(AudioConfig.CHANNELS)
+                        wav_file.setsampwidth(2)  # 16位采样，每个采样2字节
+                        wav_file.setframerate(AudioConfig.INPUT_SAMPLE_RATE)
+                        wav_file.writeframes(data)
+                    logger.info(f"已保存音频文件: {wav_filename}")
+                    
                 except OSError as e:
                     if "Input overflowed" in str(e):
                         logger.warning("输入缓冲区溢出，尝试恢复")
