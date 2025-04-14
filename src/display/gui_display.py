@@ -20,7 +20,7 @@ class GuiDisplay(BaseDisplay):
         # 创建主窗口
         self.root = tk.Tk()
         self.root.title("小智Ai语音控制")
-        self.root.geometry("300x300")
+        self.root.geometry("400x300")
 
         # 状态显示
         self.status_frame = ttk.Frame(self.root)
