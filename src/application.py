@@ -254,6 +254,8 @@ class Application:
 
     def _handle_input_audio(self):
         """处理音频输入"""
+        print("_handle_input_audio...", self.device_state)
+
         if self.device_state != DeviceState.LISTENING:
             return
 
@@ -354,6 +356,8 @@ class Application:
                 data = json.loads(json_data)
             else:
                 data = json_data
+
+            print("_on_incoming_json", data)
             # 处理不同类型的消息
             msg_type = data.get("type", "")
             if msg_type == "tts":

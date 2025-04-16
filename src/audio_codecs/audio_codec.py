@@ -166,6 +166,8 @@ class AudioCodec:
                             int(to_skip),
                             exception_on_overflow=False
                         )
+                        print(f"{int(to_skip)} bytes skipped. {available} {AudioConfig.INPUT_FRAME_SIZE}")
+
                 
                 # 读取音频数据
                 try:
@@ -175,17 +177,17 @@ class AudioCodec:
                     )
                     
                     # 保存音频数据为wav文件
-                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-                    wav_filename = f"audio_{timestamp}.wav"
-                    wav_dir = "recordings"
-                    os.makedirs(wav_dir, exist_ok=True)
-                    wav_path = os.path.join(wav_dir, wav_filename)
+                    # timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+                    # wav_filename = f"audio_{timestamp}.wav"
+                    # wav_dir = "recordings"
+                    # os.makedirs(wav_dir, exist_ok=True)
+                    # wav_path = os.path.join(wav_dir, wav_filename)
                     
-                    with wave.open(wav_path, "wb") as wav_file:
-                        wav_file.setnchannels(AudioConfig.CHANNELS)
-                        wav_file.setsampwidth(2)  # 16位采样，每个采样2字节
-                        wav_file.setframerate(AudioConfig.INPUT_SAMPLE_RATE)
-                        wav_file.writeframes(data)
+                    # with wave.open(wav_path, "wb") as wav_file:
+                    #     wav_file.setnchannels(AudioConfig.CHANNELS)
+                    #     wav_file.setsampwidth(2)  # 16位采样，每个采样2字节
+                    #     wav_file.setframerate(AudioConfig.INPUT_SAMPLE_RATE)
+                    #     wav_file.writeframes(data)
                     # logger.info(f"已保存音频文件: {wav_filename}")
                     
                 except OSError as e:
