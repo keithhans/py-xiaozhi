@@ -5,8 +5,6 @@ import time
 from typing import Optional, Callable
 
 from src.display.base_display import BaseDisplay
-# 替换keyboard导入为pynput
-from pynput import keyboard as pynput_keyboard
 
 logger = logging.getLogger("CliDisplay")
 
@@ -86,39 +84,14 @@ class CliDisplay(BaseDisplay):
             self._print_current_status()
 
     def start_keyboard_listener(self):
-        """启动键盘监听"""
-        try:
-            def on_press(key):
-                try:
-                    # F2 按键处理 - 自动对话
-                    if key == pynput_keyboard.Key.f2:
-                        if self.auto_callback:
-                            self.auto_callback()
-                    # F3 按键处理 - 打断
-                    elif key == pynput_keyboard.Key.f3:
-                        if self.abort_callback:
-                            self.abort_callback()
-                except Exception as e:
-                    self.logger.error(f"键盘事件处理错误: {e}")
-
-            # 创建并启动监听器
-            self.keyboard_listener = pynput_keyboard.Listener(
-                on_press=on_press
-            )
-            self.keyboard_listener.start()
-            self.logger.info("键盘监听器初始化成功")
-        except Exception as e:
-            self.logger.error(f"键盘监听器初始化失败: {e}")
+        """Start keyboard listener - simplified version without pynput"""
+        self.logger.info("Using simplified keyboard input mode")
+        pass  # We'll use input() in _keyboard_listener instead
 
     def stop_keyboard_listener(self):
-        """停止键盘监听"""
-        if self.keyboard_listener:
-            try:
-                self.keyboard_listener.stop()
-                self.keyboard_listener = None
-                self.logger.info("键盘监听器已停止")
-            except Exception as e:
-                self.logger.error(f"停止键盘监听器失败: {e}")
+        """Stop keyboard listener - simplified version"""
+        self.logger.info("Keyboard listener stopped")
+        pass
 
     def start(self):
         """启动CLI显示"""
@@ -158,6 +131,7 @@ class CliDisplay(BaseDisplay):
         print("  v 数字 - 设置音量(0-100)")
         print("  q     - 退出程序")
         print("  h     - 显示此帮助信息")
+        # Remove F2/F3 from help since we're not using pynput
         print("=====================\n")
 
     def _keyboard_listener(self):
