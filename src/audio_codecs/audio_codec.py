@@ -129,6 +129,12 @@ class AudioCodec:
         with self._input_paused_lock:
             return self._is_input_paused
 
+    def stop_input_stream(self):
+        self.input_stream.stop_stream()
+
+    def start_input_stream(self):
+        self.input_stream.start_stream()
+
     def read_audio(self):
         """读取音频输入数据并编码"""
         if self.is_input_paused():

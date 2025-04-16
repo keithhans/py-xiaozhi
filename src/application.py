@@ -254,8 +254,6 @@ class Application:
 
     def _handle_input_audio(self):
         """处理音频输入"""
-        logger.info(f"_handle_input_audio {self.device_state}")
-
         if self.device_state != DeviceState.LISTENING:
             return
 
@@ -357,7 +355,6 @@ class Application:
             else:
                 data = json_data
 
-            logger.info(f"_on_incoming_json {data}")
             # 处理不同类型的消息
             msg_type = data.get("type", "")
             if msg_type == "tts":
@@ -400,6 +397,9 @@ class Application:
         if self.device_state == DeviceState.IDLE or self.device_state == DeviceState.LISTENING:
             self.set_device_state(DeviceState.SPEAKING)
 
+        # 关闭收音
+        self.audio_codec.stop_input_stream()
+
         # 注释掉恢复VAD检测器的代码
         # if hasattr(self, 'vad_detector') and self.vad_detector:
         #     self.vad_detector.resume()
@@ -438,6 +438,9 @@ class Application:
                     self.set_device_state(DeviceState.LISTENING)
                 else:
                     self.set_device_state(DeviceState.IDLE)
+
+                # 打开收音
+                self.audio_codec.start_input_stream()
 
             # 安排延迟执行
             threading.Thread(target=delayed_state_change, daemon=True).start()
