@@ -13,7 +13,6 @@ from src.constants.constants import (
     DeviceState, EventType, AudioConfig, 
     AbortReason, ListeningMode
 )
-from src.display import gui_display, cli_display
 from src.utils.config_manager import ConfigManager
 
 setup_opus()
@@ -187,6 +186,7 @@ class Application:
         """初始化显示界面"""
         # 通过适配器的概念管理不同的显示模式
         if mode == 'gui':
+            from src.display import gui_display
             self.display = gui_display.GuiDisplay()
             self.display.set_callbacks(
                 press_callback=self.start_listening,
@@ -201,6 +201,7 @@ class Application:
                 )
             )
         else:
+            from src.display import cli_display
             self.display = cli_display.CliDisplay()
             self.display.set_callbacks(
                 auto_callback=self.toggle_chat_state,
