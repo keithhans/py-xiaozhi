@@ -53,6 +53,22 @@ class Robot(Thing):
         self.add_method("LieDown", "躺下", [],
                         lambda params: self._lie_down())
 
+        self.add_method("StandUp", "爬起来", [],
+                        lambda params: self._stand_up())
+
+        self.add_method("WingChun", "咏春", [],
+                        lambda params: self._wing_chun())
+
+    def _wing_chun(self):
+        AGC.runActionGroup('wing_chun')
+        print(f"[小幻机器人] 已咏春")
+        return {"status": "success", "message": "咏春"}
+
+    def _stand_up(self):
+        AGC.runActionGroup('stand_up_back')
+        print(f"[小幻机器人] 已爬起来")
+        return {"status": "success", "message": "爬起来"}
+
     def _lie_down(self):
         AGC.runActionGroup('lie_down')
         print(f"[小幻机器人] 已躺下")
