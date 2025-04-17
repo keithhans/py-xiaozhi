@@ -1167,6 +1167,8 @@ class Application:
         from src.iot.things.lamp import Lamp
         from src.iot.things.speaker import Speaker
         from src.iot.things.music_player import MusicPlayer
+        from src.iot.things.robot import Robot
+        
         from src.iot.things.CameraVL.Camera import Camera
         from src.iot.things.query_bridge_rag import QueryBridgeRAG
         from src.iot.things.temperature_sensor import TemperatureSensor
@@ -1177,6 +1179,8 @@ class Application:
         thing_manager.add_thing(Lamp())
         thing_manager.add_thing(Speaker())
         thing_manager.add_thing(MusicPlayer())
+        thing_manager.add_thing(Robot())
+
         # 默认不启用以下示例
         # thing_manager.add_thing(Camera())
         # thing_manager.add_thing(QueryBridgeRAG())
