@@ -29,6 +29,12 @@ class Robot(Thing):
         self.add_method("TurnRight", "右转", [],
                         lambda params: self._turn_right())
 
+        self.add_method("MoveLeft", "向左走", [],
+                        lambda params: self._move_left())
+
+        self.add_method("MoveRight", "向右走", [],
+                        lambda params: self._move_right())
+
         self.add_method("Bow", "鞠躬", [],
                         lambda params: self._bow())
         
@@ -124,9 +130,18 @@ class Robot(Thing):
         return {"status": "success", "message": "左转"}
 
     def _turn_right(self):
-        AGC.runActionGroup('stand')
+        AGC.runActionGroup('turn_right')
         print(f"[小幻机器人] 已右转")
         return {"status": "success", "message": "右转"}
+
+    def _move_left(self):
+        AGC.runActionGroup('left_move_fast')
+        print(f"[小幻机器人] 已向左走")
+        return {"status": "success", "message": "向左走"}
+    
+    def _move_right(self):
+        AGC.runActionGroup('right_move_fast')
+        print(f"[小幻机器人] 已向右走")
 
     def _forward(self):
         AGC.runActionGroup('go_forward')
