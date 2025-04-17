@@ -1,6 +1,7 @@
 from src.iot.thing import Thing
 import hiwonder.ActionGroupControl as AGC
-
+import time
+import random
 
 class Robot(Thing):
     def __init__(self):
@@ -37,6 +38,50 @@ class Robot(Thing):
         self.add_method("Hug", "拥抱", [],
                         lambda params: self._hug())
 
+        self.add_method("SitUp", "仰卧起坐", [],
+                        lambda params: self._sit_up())
+
+        self.add_method("Stepping", "跺脚", [],
+                        lambda params: self._stepping())
+
+        self.add_method("Squat", "深蹲", [],
+                        lambda params: self._squat())
+
+        self.add_method("Dance", "跳舞", [],
+                        lambda params: self._dance())
+
+        self.add_method("LieDown", "躺下", [],
+                        lambda params: self._lie_down())
+
+    def _lie_down(self):
+        AGC.runActionGroup('lie_down')
+        print(f"[小幻机器人] 已躺下")
+        return {"status": "success", "message": "躺下"}
+
+    def _dance(self):
+        # 随机选择动作组 '16' 或 '24'
+        dance_action = random.choice(['16', '24'])
+        AGC.runActionGroup(dance_action)
+        print(f"[小幻机器人] 已跳舞 (动作组: {dance_action})")
+        return {"status": "success", "message": "跳舞"}
+
+    def _squat(self):
+        AGC.runActionGroup('squat')
+        time.sleep(3)
+        AGC.runActionGroup('squat_up')
+        print(f"[小幻机器人] 已深蹲")
+        return {"status": "success", "message": "深蹲"}
+
+    def _stepping(self):
+        AGC.runActionGroup('stepping')
+        print(f"[小幻机器人] 已跺脚")
+        return {"status": "success", "message": "跺脚"}
+
+    def _sit_up(self):
+        AGC.runActionGroup('sit_ups')
+        print(f"[小幻机器人] 已仰卧起坐")
+        return {"status": "success", "message": "仰卧起坐"}
+    
     def _bow(self):
         AGC.runActionGroup('bow')
         print(f"[小幻机器人] 已鞠躬")
