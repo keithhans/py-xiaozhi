@@ -1191,8 +1191,9 @@ class Application:
         except Exception as e:
             logger.warning(f"初始化机器人时出错: {e}。机器人功能将无法使用")
 
+        thing_manager.add_thing(Camera())
+
         # 默认不启用以下示例
-        # thing_manager.add_thing(Camera())
         # thing_manager.add_thing(QueryBridgeRAG())
         # thing_manager.add_thing(TemperatureSensor())
         logger.info("物联网设备初始化完成")
