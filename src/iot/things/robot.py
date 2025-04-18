@@ -1,7 +1,10 @@
-from src.iot.thing import Thing
-import hiwonder.ActionGroupControl as AGC
 import time
 import random
+
+from src.iot.thing import Thing
+import hiwonder.ActionGroupControl as AGC
+from speech import speech
+
 
 class Robot(Thing):
     def __init__(self):
@@ -83,6 +86,7 @@ class Robot(Thing):
     def _dance(self):
         # 随机选择动作组 '16' 或 '24'
         dance_action = random.choice(['16', '24'])
+        speech.play_audio("/home/pi/TonyPi/audio/{}.wav".format(dance_action), volume=70, block=False)
         AGC.runActionGroup(dance_action)
         print(f"[小幻机器人] 已跳舞 (动作组: {dance_action})")
         return {"status": "success", "message": "跳舞"}
