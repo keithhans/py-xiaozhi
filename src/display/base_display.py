@@ -7,7 +7,7 @@ class BaseDisplay(ABC):
 
     def __init__(self):
         self.logger = logging.getLogger(self.__class__.__name__)
-        self.current_volume = 70  # 默认音量值
+        self.current_volume = 35  # 默认音量值
         self.volume_controller = None
         
         # 检查音量控制依赖
