@@ -598,7 +598,6 @@ class Application:
             # 恢复唤醒词检测（添加安全检查）
             if self.wake_word_detector and hasattr(self.wake_word_detector, 'paused') and self.wake_word_detector.paused:
                 self.wake_word_detector.resume()
-                logger.info("唤醒词检测已恢复")
             # 恢复音频输入流
             if self.audio_codec and self.audio_codec.is_input_paused():
                 self.audio_codec.resume_input()

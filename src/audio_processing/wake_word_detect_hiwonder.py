@@ -55,8 +55,6 @@ class WakeWordDetectorHiWonder:
                 daemon=True
             )
             self.detection_thread.start()
-
-            logger.info("唤醒词检测已启动")
             return True
         except Exception as e:
             error_msg = f"启动唤醒词检测失败: {e}"
