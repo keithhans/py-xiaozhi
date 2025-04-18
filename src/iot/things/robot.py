@@ -3,8 +3,6 @@ import random
 
 from src.iot.thing import Thing
 import hiwonder.ActionGroupControl as AGC
-from speech import speech
-
 
 class Robot(Thing):
     def __init__(self, audio_codec):
