@@ -54,6 +54,10 @@ class Camera(Thing):
             self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.config.get_config('CAMERA.frame_height'))
             self.cap.set(cv2.CAP_PROP_FPS, self.config.get_config('CAMERA.fps'))
 
+        # 清空缓冲区
+        for _ in range(5):  # 丢弃几帧，确保获取最新画面
+            self.cap.grab()
+            
         ret, frame = self.cap.read()
         if not ret:
             logger.error("无法读取画面")
@@ -69,4 +73,9 @@ class Camera(Thing):
         print(f"[虚拟设备] 画面已经识别完成")
 
         return {"status": 'success', "message": "识别成功", "result" : self.result}
+    
+    def __del__(self):
+        """析构函数，确保释放摄像头资源"""
+        if self.cap is not None:
+            self.cap.release()
     
