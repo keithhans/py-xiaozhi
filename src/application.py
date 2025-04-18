@@ -1002,38 +1002,38 @@ class Application:
             return
 
         try:
-            from src.audio_processing.wake_word_detect import WakeWordDetector
+            from src.audio_processing.wake_word_detect_hiwonder import WakeWordDetectorHiWonder
 
-            # 获取模型路径配置
-            model_path_config = self.config.get_config(
-                "WAKE_WORD_OPTIONS.MODEL_PATH",
-                "models/vosk-model-small-cn-0.22"
-            )
+            # # 获取模型路径配置
+            # model_path_config = self.config.get_config(
+            #     "WAKE_WORD_OPTIONS.MODEL_PATH",
+            #     "models/vosk-model-small-cn-0.22"
+            # )
 
-            # 确定基础路径和模型路径
-            if getattr(sys, 'frozen', False):
-                # 打包环境
-                if hasattr(sys, '_MEIPASS'):
-                    base_path = Path(sys._MEIPASS)
-                else:
-                    base_path = Path(sys.executable).parent
-            else:
-                # 开发环境
-                base_path = Path(__file__).parent.parent
+            # # 确定基础路径和模型路径
+            # if getattr(sys, 'frozen', False):
+            #     # 打包环境
+            #     if hasattr(sys, '_MEIPASS'):
+            #         base_path = Path(sys._MEIPASS)
+            #     else:
+            #         base_path = Path(sys.executable).parent
+            # else:
+            #     # 开发环境
+            #     base_path = Path(__file__).parent.parent
             
-            model_path = base_path / model_path_config  # 使用Path操作符
-            logger.info(f"使用模型路径: {model_path}")
+            # model_path = base_path / model_path_config  # 使用Path操作符
+            # logger.info(f"使用模型路径: {model_path}")
 
-            # 检查模型路径
-            if not model_path.exists():
-                logger.error(f"模型路径不存在: {model_path}")
-                # 自动禁用唤醒词功能
-                self.config.update_config("WAKE_WORD_OPTIONS.USE_WAKE_WORD", False)
-                self.wake_word_detector = None
-                return
+            # # 检查模型路径
+            # if not model_path.exists():
+            #     logger.error(f"模型路径不存在: {model_path}")
+            #     # 自动禁用唤醒词功能
+            #     self.config.update_config("WAKE_WORD_OPTIONS.USE_WAKE_WORD", False)
+            #     self.wake_word_detector = None
+            #     return
 
             # 创建检测器实例
-            self.wake_word_detector = WakeWordDetector()
+            self.wake_word_detector = WakeWordDetectorHiWonder()
 
             # 如果唤醒词检测器被禁用（内部故障），则更新配置
             if not getattr(self.wake_word_detector, 'enabled', True):
