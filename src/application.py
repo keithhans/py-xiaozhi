@@ -1173,7 +1173,6 @@ class Application:
         from src.iot.things.lamp import Lamp
         from src.iot.things.speaker import Speaker
         from src.iot.things.music_player import MusicPlayer
-        from src.iot.things.robot import Robot
         
         from src.iot.things.CameraVL.Camera import Camera
         from src.iot.things.query_bridge_rag import QueryBridgeRAG
@@ -1185,7 +1184,12 @@ class Application:
         thing_manager.add_thing(Lamp())
         thing_manager.add_thing(Speaker())
         thing_manager.add_thing(MusicPlayer())
-        thing_manager.add_thing(Robot(self.audio_codec))
+
+        try:
+            from src.iot.things.robot import Robot
+            thing_manager.add_thing(Robot(self.audio_codec))
+        except Exception as e:
+            logger.warning(f"初始化机器人时出错: {e}。机器人功能将无法使用")
 
         # 默认不启用以下示例
         # thing_manager.add_thing(Camera())
