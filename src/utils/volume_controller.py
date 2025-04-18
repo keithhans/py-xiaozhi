@@ -166,7 +166,7 @@ class VolumeController:
             )
             if result.returncode == 0:
                 for line in result.stdout.split('\n'):
-                    if 'Volume:' in line and 'front-left:' in line:
+                    if 'front-left:' in line:
                         match = re.search(r'(\d+)%', line)
                         if match:
                             return int(match.group(1))
