@@ -415,7 +415,7 @@ class Application:
             def delayed_state_change():
                 # 等待音频队列清空
                 # 增加等待重试次数，确保音频可以完全播放完毕
-                max_wait_attempts = 30  # 增加等待尝试次数
+                max_wait_attempts = 300  # 增加等待尝试次数
                 wait_interval = 0.1  # 每次等待的时间间隔
                 attempts = 0
 
