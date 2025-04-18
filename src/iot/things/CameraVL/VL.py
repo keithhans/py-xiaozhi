@@ -2,6 +2,7 @@ import os
 import base64
 from openai import OpenAI
 import threading
+
 class ImageAnalyzer:
     _instance = None
     _lock = threading.Lock()
@@ -29,6 +30,7 @@ class ImageAnalyzer:
             if cls._instance is None:
                 cls._instance = cls()
         return cls._instance
+
     def analyze_image(self, base64_image, prompt="图中描绘的是什么景象,请详细描述，因为用户可能是盲人")->str:
         """分析图片并返回结果"""
         completion = self.client.chat.completions.create(
@@ -49,14 +51,6 @@ class ImageAnalyzer:
                     ],
                 },
             ],
-            modalities=["text"],
-            stream=True,
-            stream_options={"include_usage": True},
         )
-        mesag=""
-        for chunk in completion:
-            if chunk.choices:
-                mesag+=chunk.choices[0].delta.content
-            else:
-                pass
-        return  mesag
+
+        return completion.choices[0].message.content
