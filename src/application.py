@@ -123,10 +123,13 @@ class Application:
         # 初始化应用程序（移除自动连接）
         asyncio.run_coroutine_threadsafe(self._initialize_without_connect(), self.loop)
 
+        self.set_display_type(mode)
+
         # 初始化物联网设备
+        # 有些设备依赖于物联网设备，所以需要在物联网设备初始化后再初始化
+        # 比如：音箱设备需要连接到音箱设备，然后音箱设备才能连接到物联网设备
         self._initialize_iot_devices()
 
-        self.set_display_type(mode)
         # 启动GUI
         self.display.start()
 

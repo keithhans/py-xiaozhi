@@ -19,7 +19,6 @@ class CliDisplay(BaseDisplay):
         self.current_status = "未连接"
         self.current_text = "待命"
         self.current_emotion = "😊"
-        self.current_volume = 0  # 添加当前音量属性
 
         # 回调函数
         self.auto_callback = None
