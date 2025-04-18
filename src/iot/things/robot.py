@@ -1,7 +1,8 @@
 import time
 import random
 
-from src.iot.thing import Thing
+from src.iot.thing import Thing, Parameter, ValueType
+
 import hiwonder.ActionGroupControl as AGC
 
 class Robot(Thing):
@@ -15,8 +16,9 @@ class Robot(Thing):
         # self.add_property("power", "灯是否打开", lambda: self.power)
 
         # 定义方法
-        self.add_method("Forward", "前进", [],
-                        lambda params: self._forward())
+        self.add_method("Forward", "前进", 
+                        [Parameter("steps", "1到100之间的整数", ValueType.NUMBER, False, 1)],
+                        lambda params: self._forward(params["steps"].get_value()))
 
         self.add_method("Backward", "后退", [],
                         lambda params: self._backward())
@@ -146,10 +148,13 @@ class Robot(Thing):
         AGC.runActionGroup('right_move_fast')
         print(f"[小幻机器人] 已向右走")
 
-    def _forward(self):
-        AGC.runActionGroup('go_forward')
-        print(f"[小幻机器人] 已前进")
-        return {"status": "success", "message": "前进"}
+    def _forward(self, steps):
+        for i in range(steps):
+            AGC.runActionGroup('go_forward')
+            # time.sleep(0.5)
+        AGC.runActionGroup('stand')
+        print(f"[小幻机器人] 已前进{steps}步")
+        return {"status": "success", "message": f"前进{steps}步"}
 
     def _backward(self):
         AGC.runActionGroup('back_fast')

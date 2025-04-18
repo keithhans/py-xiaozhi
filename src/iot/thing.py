@@ -36,12 +36,12 @@ class Property:
 
 
 class Parameter:
-    def __init__(self, name: str, description: str, type_: str, required: bool = True):
+    def __init__(self, name: str, description: str, type_: str, required: bool = True, value: Optional[Any] = None):
         self.name = name
         self.description = description
         self.type = type_
         self.required = required
-        self.value = None
+        self.value = value
 
     def get_descriptor_json(self) -> Dict:
         return {
