@@ -764,6 +764,10 @@ class Application:
         if self.device_state == DeviceState.IDLE:
             self.set_device_state(DeviceState.CONNECTING)  # 设置设备状态为连接中
 
+            # 清除之前收听到的内容
+            self.audio_codec.stop_input_stream()
+            self.audio_codec.start_input_stream()
+
             # 使用线程来处理连接操作，避免阻塞
             def connect_and_listen():
                 # 尝试打开音频通道
