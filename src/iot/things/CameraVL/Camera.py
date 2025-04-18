@@ -41,17 +41,18 @@ class Camera(Thing):
     
     def process(self):
         """截取当前画面并转换为 Base64 编码"""
-        camera_index = self.config.get_config('CAMERA.camera_index')
-        self.cap = cv2.VideoCapture(camera_index)
+        if self.cap == None:
+            camera_index = self.config.get_config('CAMERA.camera_index')
+            self.cap = cv2.VideoCapture(camera_index)
 
-        if not self.cap.isOpened():
-            logger.error("无法打开摄像头")
-            return
+            if not self.cap.isOpened():
+                logger.error("无法打开摄像头")
+                return
 
-        # 设置摄像头参数
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.config.get_config('CAMERA.frame_width'))
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.config.get_config('CAMERA.frame_height'))
-        self.cap.set(cv2.CAP_PROP_FPS, self.config.get_config('CAMERA.fps'))
+            # 设置摄像头参数
+            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.config.get_config('CAMERA.frame_width'))
+            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.config.get_config('CAMERA.frame_height'))
+            self.cap.set(cv2.CAP_PROP_FPS, self.config.get_config('CAMERA.fps'))
 
         ret, frame = self.cap.read()
         if not ret:
@@ -66,5 +67,6 @@ class Camera(Thing):
         self.result = str(self.VL.analyze_image(frame_base64, "简单介绍一下你看到的内容"))
         logger.info("画面已经识别到啦")
         print(f"[虚拟设备] 画面已经识别完成")
+
         return {"status": 'success', "message": "识别成功", "result" : self.result}
     
