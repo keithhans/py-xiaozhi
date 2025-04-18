@@ -1179,7 +1179,7 @@ class Application:
         thing_manager.add_thing(Lamp())
         thing_manager.add_thing(Speaker())
         thing_manager.add_thing(MusicPlayer())
-        thing_manager.add_thing(Robot())
+        thing_manager.add_thing(Robot(self.audio_codec))
 
         # 默认不启用以下示例
         # thing_manager.add_thing(Camera())

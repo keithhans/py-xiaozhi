@@ -289,6 +289,64 @@ class AudioCodec:
             logger.error("播放音频时出错")
             self._reinitialize_output_stream()
 
+
+    def play_audio_file(self, file_path: str) -> None:
+        """播放本地wav音频文件，支持格式转换
+        
+        Args:
+            file_path: wav文件路径
+            
+        Returns:
+            None
+        """
+        import resampy
+        import threading
+
+        def _play_audio_file():
+            try:
+                with wave.open(file_path, 'rb') as wav_file:
+                    # 获取wav文件的参数
+                    channels = wav_file.getnchannels()
+                    sample_width = wav_file.getsampwidth()
+                    frame_rate = wav_file.getframerate()
+                    
+                    # 读取整个文件
+                    audio_data = wav_file.readframes(wav_file.getnframes())
+                    audio_array = np.frombuffer(audio_data, dtype=np.int16)
+                    
+                    # 如果是立体声，转换为单声道
+                    if channels == 2:
+                        audio_array = audio_array.reshape(-1, 2).mean(axis=1).astype(np.int16)
+                    
+                    # 如果采样率不匹配，进行重采样
+                    if frame_rate != AudioConfig.OUTPUT_SAMPLE_RATE:
+                        audio_array = resampy.resample(
+                            audio_array.astype(np.float32) / 32768.0,
+                            frame_rate,
+                            AudioConfig.OUTPUT_SAMPLE_RATE
+                        )
+                        audio_array = (audio_array * 32768).astype(np.int16)
+                    
+                    # 使用锁保护输出流操作
+                    with self._stream_lock:
+                        if not self.output_stream or not self.output_stream.is_active():
+                            self._reinitialize_output_stream()
+                        
+                        # 分块播放
+                        chunk_size = AudioConfig.OUTPUT_FRAME_SIZE
+                        for i in range(0, len(audio_array), chunk_size):
+                            chunk = audio_array[i:i + chunk_size].tobytes()
+                            self.output_stream.write(chunk)
+                    
+                    logger.info(f"音频文件 {file_path} 播放完成")
+                    return True
+                    
+            except Exception as e:
+                logger.error(f"播放音频文件失败: {e}")
+                return False
+
+        threading.Thread(target=_play_audio_file, daemon=True).start()    
+
     def has_pending_audio(self):
         """检查是否还有待播放的音频数据"""
         return not self.audio_decode_queue.empty()

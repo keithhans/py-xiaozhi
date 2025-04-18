@@ -7,9 +7,9 @@ from speech import speech
 
 
 class Robot(Thing):
-    def __init__(self):
+    def __init__(self, audio_codec):
         super().__init__("Robot", "小幻机器人")
-        # self.power = False
+        self.audio_codec = audio_codec
 
         print(f"[小幻机器人] 初始化完成")
 
@@ -86,7 +86,8 @@ class Robot(Thing):
     def _dance(self):
         # 随机选择动作组 '16' 或 '24'
         dance_action = random.choice(['16', '24'])
-        speech.play_audio("/home/pi/TonyPi/audio/{}.wav".format(dance_action), volume=70, block=False)
+        audio_file = "/home/pi/TonyPi/audio/{}.wav".format(dance_action)
+        self.audio_codec.play_audio_file(audio_file)
         AGC.runActionGroup(dance_action)
         print(f"[小幻机器人] 已跳舞 (动作组: {dance_action})")
         return {"status": "success", "message": "跳舞"}
