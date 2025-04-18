@@ -17,11 +17,12 @@ class Robot(Thing):
 
         # 定义方法
         self.add_method("Forward", "前进", 
-                        [Parameter("steps", "1到100之间的整数", ValueType.NUMBER, False, 1)],
+                        [Parameter("steps", "1到20之间的整数", ValueType.NUMBER, False, 1)],
                         lambda params: self._forward(params["steps"].get_value()))
 
-        self.add_method("Backward", "后退", [],
-                        lambda params: self._backward())
+        self.add_method("Backward", "后退", 
+                        [Parameter("steps", "1到20之间的整数", ValueType.NUMBER, False, 1)],
+                        lambda params: self._backward(params["steps"].get_value()))
 
         self.add_method("Stand", "立正", [],
                         lambda params: self._stand())
@@ -151,12 +152,13 @@ class Robot(Thing):
     def _forward(self, steps):
         for i in range(steps):
             AGC.runActionGroup('go_forward')
-            # time.sleep(0.5)
         AGC.runActionGroup('stand')
         print(f"[小幻机器人] 已前进{steps}步")
         return {"status": "success", "message": f"前进{steps}步"}
 
-    def _backward(self):
-        AGC.runActionGroup('back_fast')
-        print(f"[小幻机器人] 已后退")
-        return {"status": "success", "message": "后退"}
+    def _backward(self, steps):
+        for i in range(steps):
+            AGC.runActionGroup('back_fast')
+        AGC.runActionGroup('stand')
+        print(f"[小幻机器人] 已后退{steps}步")
+        return {"status": "success", "message": f"后退{steps}步"}
