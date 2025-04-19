@@ -4,7 +4,7 @@ import time
 import os
 from datetime import datetime
 
-def record_audio(duration=5, sample_rate=16000):
+def record_audio(index = 0, duration=5, sample_rate=16000):
     """
     录制音频并保存为WAV文件
     
@@ -27,6 +27,7 @@ def record_audio(duration=5, sample_rate=16000):
             channels=CHANNELS,
             rate=sample_rate,
             input=True,
+            input_device_index=index,
             frames_per_buffer=CHUNK
         )
 
@@ -67,4 +68,18 @@ def record_audio(duration=5, sample_rate=16000):
         audio.terminate()
 
 if __name__ == "__main__":
-    record_audio()
+    import argparse
+    
+    # 创建命令行参数解析器
+    parser = argparse.ArgumentParser(description='录制音频')
+    parser.add_argument('-d', '--device', type=int, default=0,
+                      help='输入设备索引 (默认: 0)')
+    parser.add_argument('-t', '--time', type=float, default=5,
+                      help='录制时长(秒) (默认: 5)')
+    parser.add_argument('-r', '--rate', type=int, default=16000,
+                      help='采样率(Hz) (默认: 16000)')
+    
+    args = parser.parse_args()
+    
+    # 使用命令行参数调用录音函数
+    record_audio(index=args.device, duration=args.time, sample_rate=args.rate)
